@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Rock Blast – Fire Ball - Professional 2D Arcade Game">
+    <title>Rock Blast – Fire Ball | Arcade Game</title>
+    <style>
+        /* ============================================
+           PROFESSIONAL SCI-FI GAME INTERFACE 
+           Modern, User-Friendly Design
+           ============================================ */
+        
+        /* Import Gaming Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Animated Sci-Fi Gradient Background */
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 25%, #2d1b4e 50%, #1a1f3a 75%, #0a0e27 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: auto; /* Allow scrolling on mobile */
+            position: relative;
+        }
+        
+        /* Animated Background Gradient */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Animated Floating Stars Background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 85%, white, transparent);
+            background-size: 200% 200%;
+            background-position: 0% 0%;
+            animation: starsMove 20s linear infinite;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        @keyframes starsMove {
+            from { background-position: 0% 0%; }
+            to { background-position: 100% 100%; }
+        }
+
+        /* ============================================
+           START PAGE / LANDING PAGE
+           ============================================ */
+        
+        #startPage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        #startPage.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+        
+        .start-logo {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 60px #0099ff,
+                2px 2px 8px rgba(0, 0, 0, 0.8);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            animation: logoFloat 3s ease-in-out infinite;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .start-subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            color: #ff6b35;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(255, 107, 53, 0.9);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: subtitlePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes subtitlePulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        .start-instructions {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(45, 27, 78, 0.9));
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px 50px;
+            margin-bottom: 50px;
+            max-width: 600px;
+            box-shadow: 
+                0 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .start-instructions h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .start-instructions p {
+            color: #ffffff;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 10px 0;
+            text-align: left;
+        }
+        
+        .start-instructions strong {
+            color: #ffd700;
+            font-weight: 700;
+        }
+        
+        .start-button {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            border: 3px solid #ffd700;
+            border-radius: 50px;
+            padding: 20px 60px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 53, 0.6),
+                0 5px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            animation: buttonGlow 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .start-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .start-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 
+                0 0 50px rgba(255, 107, 53, 0.9),
+                0 10px 30px rgba(0, 0, 0, 0.7);
+            border-color: #00ffff;
+        }
+        
+        .start-button:active {
+            transform: scale(1.05) translateY(-2px);
+        }
+        
+        @keyframes buttonGlow {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.6), 0 5px 20px rgba(0, 0, 0, 0.5); 
+            }
+            50% { 
+                box-shadow: 0 0 50px rgba(255, 107, 53, 0.9), 0 5px 30px rgba(0, 0, 0, 0.7); 
+            }
+        }
+        
+        /* ============================================
+           GAME CONTAINER (Hidden Initially)
+           ============================================ */
+
+        .game-container {
+            display: none; /* Hidden until game starts */
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .game-container.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Main Title - Futuristic Glowing Style */
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffff;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff,
+                0 0 40px #0099ff,
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes titlePulse {
+            0%, 100% { 
+                text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; 
+            }
+            50% { 
+                text-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff, 0 0 50px #0099ff; 
+            }
+        }
+        
+        /* Subtitle */
+        .subtitle {
+            font-family: 'Rajdhani', sans-serif;
+            color: #ff6b35;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Canvas Container with Neon Glow */
+        .canvas-wrapper {
+            position: relative;
+            border: 3px solid #00ffff;
+            border-radius: 15px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.5),
+                0 0 40px rgba(0, 255, 255, 0.3),
+                0 10px 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+            background: #000;
+            overflow: hidden;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background: #000;
+            cursor: none; /* Hide cursor for better gaming experience */
+            touch-action: none; /* Prevent default touch behaviors on mobile */
+        }
+        
+        /* Pointer Lock Indicator - Visual feedback when mouse is locked */
+        .pointer-locked {
+            border-color: #00ff00 !important;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.7),
+                0 0 50px rgba(0, 255, 0, 0.4),
+                0 10px 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(0, 255, 0, 0.15) !important;
+        }
+
+        /* Modern Control Panel */
+        .controls {
+            margin-top: 30px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.05rem;
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(26, 31, 58, 0.95));
+            padding: 25px 45px;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 
+                0 5px 20px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 850px;
+        }
+        
+        .controls-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #00ffff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            letter-spacing: 3px;
+        }
+
+        .controls p {
+            margin: 10px 0;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+        
+        .controls strong {
+            color: #ffd700;
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .emoji-icon {
+            font-size: 1.4rem;
+            vertical-align: middle;
+            margin: 0 6px;
+        }
+
+        /* Status Indicator - Glowing Box */
+        #status {
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 0, 0.15));
+            border-radius: 12px;
+            border: 2px solid rgba(0, 255, 0, 0.5);
+            color: #0f0;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            animation: statusPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 0, 0.6); }
+        }
+        
+        /* Error State */
+        .status-error {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(200, 0, 0, 0.15)) !important;
+            border-color: rgba(255, 0, 0, 0.5) !important;
+            color: #f00 !important;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.8) !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3) !important;
+        }
+        
+        /* Feature Badges */
+        .features {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.25), rgba(255, 69, 0, 0.2));
+            border: 2px solid rgba(255, 107, 53, 0.6);
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            color: #ff9966;
+            font-weight: 700;
+            font-family: 'Rajdhani', sans-serif;
+            text-shadow: 0 0 5px rgba(255, 107, 53, 0.5);
+            box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+        
+        /* Responsive Design for Mobile */
+        @media (max-width: 900px) {
+            .start-logo { font-size: 2.5rem; letter-spacing: 4px; }
+            .start-subtitle { font-size: 1.2rem; }
+            .start-instructions { padding: 20px 30px; max-width: 90%; }
+            .start-instructions h3 { font-size: 1.2rem; }
+            .start-instructions p { font-size: 1rem; }
+            .start-button { font-size: 1.4rem; padding: 15px 40px; }
+            
+            h1 { font-size: 2.2rem; letter-spacing: 3px; }
+            .subtitle { font-size: 1rem; }
+            .controls { 
+                padding: 20px 30px; 
+                font-size: 0.95rem; 
+                margin-top: 20px;
+            }
+            .controls-title { font-size: 1.2rem; }
+            #gameCanvas { 
+                max-width: 100%; 
+                height: auto; 
+            }
+            .feature-badge { 
+                font-size: 0.85rem; 
+                padding: 8px 16px; 
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .start-logo { font-size: 2rem; }
+            .start-subtitle { font-size: 1rem; letter-spacing: 2px; }
+            .start-button { font-size: 1.2rem; padding: 12px 30px; }
+            
+            h1 { font-size: 1.8rem; }
+            .subtitle { font-size: 0.9rem; }
+            .controls { padding: 15px 20px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         START PAGE / LANDING PAGE
+         ============================================ -->
+    <div id="startPage">
+        <div class="start-logo">
+            🔥 ROCK BLAST 🔥<br>
+            <span style="font-size: 0.5em; letter-spacing: 4px;">FIRE BALL</span>
+        </div>
+        
+        <div class="start-subtitle">⚡ ARCADE EDITION ⚡</div>
+        
+        <div class="start-instructions">
+            <h3>🎮 HOW TO PLAY</h3>
+            <p>🖱️ <strong>Move:</strong> Use mouse/touch to control your cannon</p>
+            <p>🔥 <strong>Shoot:</strong> Auto-fire fireballs continuously</p>
+            <p>🪨 <strong>Destroy:</strong> Break rocks before they reach the ground</p>
+            <p>💎 <strong>Collect:</strong> Power-ups for shields and double-fire</p>
+            <p>🏆 <strong>Survive:</strong> Destroy waves of rocks to increase your score!</p>
+        </div>
+        
+        <button class="start-button" id="startGameBtn" onclick="startGame()">
+            <span style="position: relative; z-index: 1;">START GAME</span>
+        </button>
+    </div>
+    
+    <!-- ============================================
+         GAME CONTAINER (Hidden Initially)
+         ============================================ -->
+    <div class="game-container" id="gameContainer">
+        <!-- Main Title with Glow Effect -->
+        <h1>🔥 ROCK BLAST 🔥</h1>
+        <div class="subtitle">⚡ FIRE BALL ARCADE EDITION ⚡</div>
+        
+        <!-- Game Canvas with Neon Border -->
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+        
+        <!-- Modern Control Panel -->
+        <div class="controls">
+            <div class="controls-title">🎮 GAME CONTROLS</div>
+            
+            <p><strong>🖱️ TOUCH/MOUSE:</strong> Slide finger or move cursor to control player</p>
+            <p><strong>🔒 MOUSE LOCK:</strong> Desktop: Mouse locked to game (Click canvas to re-lock)</p>
+            <p><strong>🔥 AUTO-FIRE:</strong> Fireballs shoot automatically - no button needed!</p>
+            <p><strong>⌨️ R KEY:</strong> Restart game after Game Over</p>
+            
+            <!-- Status Indicator -->
+            <div id="status">✅ GAME READY! Touch screen or move mouse to start...</div>
+        </div>
+    </div>
+
+    <!-- Main Game Script -->
+    <script src="main.js"></script>
+    
+    <script>
+        // ============================================
+        // START PAGE NAVIGATION LOGIC
+        // ============================================
+        
+        let gameStarted = false;
+        let pointerLocked = false;
+        let isMobileDevice = false; // Track if user is on mobile
+        
+        // Detect mobile device
+        function detectMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                   ('ontouchstart' in window) || 
+                   (navigator.maxTouchPoints > 0);
+        }
+        
+        function startGame() {
+            if (gameStarted) return;
+            
+            gameStarted = true;
+            isMobileDevice = detectMobile(); // Detect device type
+            
+            // Get elements
+            const startPage = document.getElementById('startPage');
+            const gameContainer = document.getElementById('gameContainer');
+            const canvas = document.getElementById('gameCanvas');
+            
+            // Hide start page with animation
+            startPage.classList.add('hidden');
+            
+            // Show game container after transition
+            setTimeout(() => {
+                startPage.style.display = 'none';
+                gameContainer.classList.add('active');
+                
+                // Only request pointer lock on DESKTOP devices
+                if (!isMobileDevice && canvas && canvas.requestPointerLock) {
+                    canvas.requestPointerLock();
+                    console.log('🎮 Desktop detected - enabling pointer lock');
+                } else {
+                    console.log('📱 Mobile/Touch device detected - pointer lock disabled');
+                }
+                
+                // Initialize game if needed (main.js will handle this)
+                if (typeof initializeGame === 'function') {
+                    initializeGame();
+                }
+                
+                console.log('🎮 Game Started!');
+            }, 500);
+        }
+        
+        // ============================================
+        // POINTER LOCK API - SMART MOUSE CONFINEMENT
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            const canvasWrapper = document.querySelector('.canvas-wrapper');
+            
+            if (!canvas) return;
+            
+            // Listen for pointer lock changes
+            document.addEventListener('pointerlockchange', () => {
+                if (document.pointerLockElement === canvas) {
+                    // Mouse is now locked to canvas
+                    pointerLocked = true;
+                    console.log('🔒 Mouse locked to game area');
+                    
+                    // Update status message (gameplay active)
+                    updateStatusMessage('🔒 GAME ACTIVE - Mouse locked to canvas');
+                    
+                    // Add visual feedback (green glow)
+                    if (canvasWrapper) {
+                        canvasWrapper.classList.add('pointer-locked');
+                    }
+                } else {
+                    // Mouse is unlocked
+                    pointerLocked = false;
+                    console.log('🔓 Mouse unlocked');
+                    
+                    // Check if game is active or game over
+                    // Access gameState from main.js if available
+                    const isGameOver = typeof gameState !== 'undefined' && gameState.isGameOver;
+                    
+                    if (isGameOver) {
+                        // Game Over state - mouse unlocked for UI interaction
+                        updateStatusMessage('💀 GAME OVER - Click R or Restart Button');
+                    } else if (gameStarted) {
+                        // Game active but mouse unlocked (user pressed ESC)
+                        updateStatusMessage('⚠️ PAUSED - Click canvas to resume');
+                    }
+                    
+                    // Remove visual feedback
+                    if (canvasWrapper) {
+                        canvasWrapper.classList.remove('pointer-locked');
+                    }
+                }
+            }, false);
+            
+            // Handle pointer lock errors
+            document.addEventListener('pointerlockerror', () => {
+                console.error('❌ Pointer lock failed');
+                updateStatusMessage('⚠️ Mouse lock unavailable - game still playable');
+            }, false);
+            
+            // Re-lock pointer when clicking canvas (only during active gameplay)
+            canvas.addEventListener('click', () => {
+                // Check game state before re-locking
+                const isGameOver = typeof gameState !== 'undefined' && gameState.isGameOver;
+                
+                // Only re-lock if game is started, NOT game over, and NOT mobile
+                if (gameStarted && !pointerLocked && !isGameOver && !isMobileDevice) {
+                    canvas.requestPointerLock();
+                    console.log('🔒 Re-locking mouse to canvas');
+                }
+            });
+        });
+        
+        // Helper function to update status message
+        function updateStatusMessage(message) {
+            const status = document.getElementById('status');
+            if (status && !status.textContent.includes('ERROR')) {
+                status.textContent = message;
+            }
+        }
+        
+        // Allow Enter key to start game from landing page
+        document.addEventListener('keydown', (e) => {
+            if (!gameStarted && e.key === 'Enter') {
+                startGame();
+            }
+        });
+        
+        // Enhanced Error Handling with Visual Feedback
+        window.onerror = function(msg, url, line) {
+            const status = document.getElementById('status');
+            if (status) {
+                status.className = 'status-error';
+                status.textContent = `❌ ERROR: ${msg} (Line ${line}) - Press F12 for console`;
+            }
+            console.error('🎮 Game Error:', msg, 'at line', line);
+            return false;
+        };
+        
+        // Success message with smooth transition (only when game is active)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (gameStarted) {
+                    const status = document.getElementById('status');
+                    if (status && !status.textContent.includes('ERROR')) {
+                        status.textContent = '✅ GAME ACTIVE! Touch or move to play! 🚀';
+                    }
+                }
+            }, 1200);
+        });
+        
+        // Prevent context menu on canvas for better mobile experience
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('gameCanvas');
+            if (canvas) {
+                canvas.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
